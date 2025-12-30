@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { db, auth } from './firebase';
 import { 
   Play, Clock, CheckCircle, XCircle, Menu, X, LogOut, User, Shield, 
   FileText, BarChart, Upload, Trash2, ChevronLeft, ChevronRight, 
