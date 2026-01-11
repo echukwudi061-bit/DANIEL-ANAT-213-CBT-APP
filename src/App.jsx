@@ -454,7 +454,12 @@ export default function App() {
                 {/* flex-1 (Mobile): Always fills height to keep footer pinned at bottom. */}
                 {/* md:flex-initial (Desktop): 'flex-initial' allows it to shrink (scroll) if long, but NOT grow (hug) if short. */}
                 <div className="flex-1 md:flex-initial overflow-y-auto overscroll-y-contain p-4 min-h-0 bg-white">
-                   <div className="grid grid-cols-5 gap-2">
+                   {/* DYNAMIC GRID LOGIC START */}
+                   <div className={`
+                      grid gap-2 
+                      ${questions.length < 25 ? 'grid-cols-3' : (questions.length < 50 ? 'grid-cols-4' : 'grid-cols-5')} 
+                      md:grid-cols-5
+                   `}>
                         {questions.map((q, idx) => {
                             const isAnswered = !!answers[q.id];
                             const isCurrent = idx === currentQIndex;
@@ -463,7 +468,8 @@ export default function App() {
                                     key={q.id}
                                     onClick={() => { setCurrentQIndex(idx); setIsMobileMenuOpen(false); }}
                                     className={`
-                                        h-8 w-8 md:h-10 md:w-10 rounded-lg text-xs md:text-sm font-bold transition flex items-center justify-center border
+                                        w-full aspect-square md:w-10 md:h-10 md:aspect-auto 
+                                        rounded-lg text-xs md:text-sm font-bold transition flex items-center justify-center border
                                         ${isCurrent ? 'ring-2 ring-blue-600 ring-offset-1 border-blue-600 z-10' : ''}
                                         ${isAnswered ? 'bg-green-100 text-green-700 border-green-200' : 'bg-gray-50 text-gray-600 border-gray-200 hover:bg-gray-100'}
                                     `}
@@ -473,6 +479,7 @@ export default function App() {
                             );
                         })}
                     </div>
+                    {/* DYNAMIC GRID LOGIC END */}
                 </div>
 
                 {/* --- 3. FOOTER (Locked at Bottom) --- */}
@@ -520,7 +527,7 @@ export default function App() {
                                     onClick={() => handleAnswerSelect(question.id, optKey)}
                                     className={`
                                         w-full text-left p-3 md:p-4 rounded-xl border-2 transition-all duration-200 flex items-start md:items-center group
-                                                                ${answers[question.id] === optKey 
+                                        ${answers[question.id] === optKey 
                                             ? 'border-blue-500 bg-blue-50 text-blue-900' 
                                             : 'border-gray-100 hover:border-blue-200 hover:bg-gray-50'
                                         }
@@ -564,7 +571,7 @@ export default function App() {
       </div>
     );
   }
-
+  
     // ---------------- RENDER: RESULT ----------------
   if (view === 'result') {
     const resultDataStr = sessionStorage.getItem('cbt_currentResult');
